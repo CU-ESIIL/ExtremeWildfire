@@ -16,7 +16,9 @@ Extreme wildfire events are increasing, driven by the expansion of urban communi
 
 - **Member 1**: [Melissa Lucash, PI.](https://www.melissalucash.com/melissalucash)
 - **Member 2**: [James Lamping, Co-PI and tech lead.](https://spatialforests.org)
-- ...
+- **Member 3**: [Rob Scheller, Co-PI.](https://cnr.ncsu.edu/directory/robert-scheller/)
+- **Member 4**: [Branda Nowell, Co-PI.](https://chass.ncsu.edu/people/blnowell/)
+- **Member 5**: [Sam Flake, Co-PI.](https://github.com/flakesw)
 
 ## Code Repository
 
