@@ -1,10 +1,10 @@
-# [Your Working Group Name]
+# Interdisciplinary Approaches to Modeling Extreme Wildfire Events
 
-Welcome to the [Your Working Group Name] repository, part of the Environmental Data Science Innovation and Inclusion Lab (ESIIL). This repository serves as the central hub for our working group, hosting our project description, proposals, member bios, codebase, and more.
+Welcome to the Interdisciplinary Approaches to Modeling Extreme Wildfire Events repository, part of the Environmental Data Science Innovation and Inclusion Lab (ESIIL). This repository serves as the central hub for our working group, hosting our project description, proposals, member bios, codebase, and more.
 
 ## Our Project
 
-[Provide a brief overview of your project here. Explain what you aim to achieve, the importance of your project, and its expected impact.]
+Extreme wildfire events are increasing, driven by the expansion of urban communities closer to forests, land management practices which suppressed wildfire, and climate change. These events have a low probability of occurring, but they exhibit exceptional fire behavior characteristics and produce severe consequences for forests and humans. While the media and field studies focus on extreme wildfire events like the Lahaina wildfire in Hawaii and the Paradise fire in California, most estimates of wildfire risk report averages, but not extreme events, and they often underestimate the effects of climate change. Our workshops will form a cohesive, interdisciplinary research team to: 1) synthesize our current understanding of extreme fire behavior, 2) isolate the current gaps in our understanding of the social and biophysical drivers that cause extreme wildfire events and risk to communities, 3) develop a roadmap for improving the representation of extreme events into models that represent social and biophysical processes, and 4) integrate a widely-used model of forest change into High Performance Computers to generate improved predictions of wildfire risk and the probability of extreme wildfire events. We will initially investigate extreme fires in the Sierra Nevada Mountains of California, interior Alaska, and the Southern Appalachians. 
 
 ## Project Proposal
 
@@ -14,8 +14,8 @@ Welcome to the [Your Working Group Name] repository, part of the Environmental D
 
 [List the names and a brief description of each group member, possibly linking to their personal or professional web pages.]
 
-- **Member 1**: Brief description or role within the group.
-- **Member 2**: Brief description or role within the group.
+- **Member 1**: Melissa Lucash, PI.
+- **Member 2**: James Lamping, Co-PI and tech lead.
 - ...
 
 ## Code Repository
