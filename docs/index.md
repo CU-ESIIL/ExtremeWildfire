@@ -8,7 +8,7 @@ Extreme wildfire events are increasing, driven by the expansion of urban communi
 
 ## Project Proposal
 
-[Here, you will find the accepted project proposal](https://drive.google.com/file/d/1VOe5aLCoTnRI7rbuLQUobUCHIYkyEtOO/view?usp=share_link), including project goals, timeline and more.
+[Here, you will find the accepted project proposal](), including project goals, timeline and more.
 
 ## Group Members
 
