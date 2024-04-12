@@ -1,22 +1,21 @@
-# Interdisciplinary Approaches to Modeling Extreme Wildfire Events 
+# Interdisciplinary Approaches to Modeling Extreme Wildfire Events
 
-Welcome to the **Interdisciplinary Approaches to Modeling Extreme Wildfire Events** repository, an integral part of the Environmental Data Science Innovation and Inclusion Lab (ESIIL). This repository is the central hub for our working group, encompassing our project overview, proposals, team member information, codebase, and more.
+Welcome to the Interdisciplinary Approaches to Modeling Extreme Wildfire Events repository, part of the Environmental Data Science Innovation and Inclusion Lab (ESIIL). This repository serves as the central hub for our working group, hosting our project description, proposals, member bios, codebase, and more.
 
 ## Our Project
-Extreme wildfire events are increasing, driven by the expansion of urban communities closer to forests, land management practices which suppressed wildfire, and climate change. These events have a low probability of occurring, but they exhibit exceptional fire behavior characteristics and produce severe consequences for forests and humans. While the media and field studies focus on extreme wildfire events like the Lahaina wildfire in Hawaii and the Paradise fire in California, most estimates of wildfire risk report averages, but not extreme events, and they often underestimate the effects of climate change. Our workshops will form a cohesive, interdisciplinary research team to: 1) synthesize our current understanding of extreme fire behavior, 2) isolate the current gaps in our understanding of the social and biophysical drivers that cause extreme wildfire events and risk to communities, 3) develop a roadmap for improving the representation of extreme events into models that represent social and biophysical processes, and 4) integrate a widely-used model of forest change into High Performance Computers to generate improved predictions of wildfire risk and the probability of extreme wildfire events. We will initially investigate extreme fires in the Sierra Nevada Mountains of California, interior Alaska, and the Southern Appalachians.
 
-## Documentation
-- Access detailed documentation on our [GitHub Pages site](https://cu-esiil.github.io/ExtremeWildfire).
-- Find comprehensive guides, tutorials, and additional resources.
+Extreme wildfire events are increasing, driven by the expansion of urban communities closer to forests, land management practices which suppressed wildfire, and climate change. These events have a low probability of occurring, but they exhibit exceptional fire behavior characteristics and produce severe consequences for forests and humans. While the media and field studies focus on extreme wildfire events like the Lahaina wildfire in Hawaii and the Paradise fire in California, most estimates of wildfire risk report averages, but not extreme events, and they often underestimate the effects of climate change. Our workshops will form a cohesive, interdisciplinary research team to: 1) synthesize our current understanding of extreme fire behavior, 2) isolate the current gaps in our understanding of the social and biophysical drivers that cause extreme wildfire events and risk to communities, 3) develop a roadmap for improving the representation of extreme events into models that represent social and biophysical processes, and 4) integrate a widely-used model of forest change into High Performance Computers to generate improved predictions of wildfire risk and the probability of extreme wildfire events. We will initially investigate extreme fires in the Sierra Nevada Mountains of California, interior Alaska, and the Southern Appalachians. 
 
 ## Project Proposal
-[Link to the detailed project proposal document or include it directly in the repository. Outline the goals, methodologies, anticipated challenges, and projected timelines.]
+
+[Here, you will find the accepted project proposal](), including project goals, timeline and more.
 
 ## Group Members
-- Member 1: Melissa Lucash, PI
-- Member 2: James Lamping, tech lead
-- ...
-- [Link to more detailed bios or profiles if available.]
+- **Member 1**: [Melissa Lucash, PI.](https://www.melissalucash.com/melissalucash)
+- **Member 2**: [James Lamping, Co-PI and tech lead.](https://spatialforests.org)
+- **Member 3**: [Rob Scheller, Co-PI.](https://cnr.ncsu.edu/directory/robert-scheller/)
+- **Member 4**: [Branda Nowell, Co-PI.](https://chass.ncsu.edu/people/blnowell/)
+- **Member 5**: [Sam Flake, Co-PI.](https://github.com/flakesw)
 
 ## Repository Structure
 - **Analysis Code**: Scripts for data analysis, statistical modeling, etc.
