@@ -13,8 +13,8 @@ Welcome to the **LANDIS and Extreme Wildfire Events** repository, an integral pa
 [Link to the detailed project proposal document or include it directly in the repository. Outline the goals, methodologies, anticipated challenges, and projected timelines.]
 
 ## Group Members
-- Member 1: Brief description or role within the group.
-- Member 2: Brief description or role within the group.
+- Member 1: Melissa Lucash, PI
+- Member 2: James Lamping, tech lead
 - ...
 - [Link to more detailed bios or profiles if available.]
 
