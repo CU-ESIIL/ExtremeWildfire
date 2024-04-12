@@ -1,12 +1,12 @@
-# LANDIS and Extreme Wildfire Events
+# Interdisciplinary Approaches to Modeling Extreme Wildfire Events 
 
-Welcome to the **LANDIS and Extreme Wildfire Events** repository, an integral part of the Environmental Data Science Innovation and Inclusion Lab (ESIIL). This repository is the central hub for our working group, encompassing our project overview, proposals, team member information, codebase, and more.
+Welcome to the **Interdisciplinary Approaches to Modeling Extreme Wildfire Events** repository, an integral part of the Environmental Data Science Innovation and Inclusion Lab (ESIIL). This repository is the central hub for our working group, encompassing our project overview, proposals, team member information, codebase, and more.
 
 ## Our Project
-[Provide a brief overview of your project here. Describe what you aim to achieve, the importance of your project, and its expected impact.]
+Extreme wildfire events are increasing, driven by the expansion of urban communities closer to forests, land management practices which suppressed wildfire, and climate change. These events have a low probability of occurring, but they exhibit exceptional fire behavior characteristics and produce severe consequences for forests and humans. While the media and field studies focus on extreme wildfire events like the Lahaina wildfire in Hawaii and the Paradise fire in California, most estimates of wildfire risk report averages, but not extreme events, and they often underestimate the effects of climate change. Our workshops will form a cohesive, interdisciplinary research team to: 1) synthesize our current understanding of extreme fire behavior, 2) isolate the current gaps in our understanding of the social and biophysical drivers that cause extreme wildfire events and risk to communities, 3) develop a roadmap for improving the representation of extreme events into models that represent social and biophysical processes, and 4) integrate a widely-used model of forest change into High Performance Computers to generate improved predictions of wildfire risk and the probability of extreme wildfire events. We will initially investigate extreme fires in the Sierra Nevada Mountains of California, interior Alaska, and the Southern Appalachians.
 
 ## Documentation
-- Access detailed documentation on our [GitHub Pages site](https://your-gh-pages-url/).
+- Access detailed documentation on our [GitHub Pages site](https://cu-esiil.github.io/ExtremeWildfire).
 - Find comprehensive guides, tutorials, and additional resources.
 
 ## Project Proposal
