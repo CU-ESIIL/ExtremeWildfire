@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/785774667.svg)](https://zenodo.org/doi/10.5281/zenodo.11167932)
+
 # Interdisciplinary Approaches to Modeling Extreme Wildfire Events
 
 Welcome to the Interdisciplinary Approaches to Modeling Extreme Wildfire Events repository, part of the Environmental Data Science Innovation and Inclusion Lab (ESIIL). This repository serves as the central hub for our working group, hosting our project description, proposals, member bios, codebase, and more.
