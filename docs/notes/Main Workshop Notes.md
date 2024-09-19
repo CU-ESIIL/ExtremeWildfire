@@ -32,7 +32,7 @@
   - Branda Nowell shared her background in disaster psychology and wildfire institutional response, with examples from a Gatlinburg wildfire.
 
 #### General Introductions  
-![ESIIL workshop group photo](https://share.icloud.com/photos/0cbGzhY4NySuhLdlptZ6Hj28g)
+![ESIIL workshop group photo](../photos/IMG_4644.JPG)
 - **Ali Urza**: Research ecologist studying post-fire trajectories.  
 - **Sean Parks**: Researches fire and climate relationships in Western US forests, focusing on high-severity fire.  
 - **Courtney Shultz**: Focuses on policy barriers to fire and forest restoration collaboration post-fire.  
@@ -77,7 +77,7 @@
     Big switch to thinking about the two axes. Consequences and anomalous(fire behavior). These can be referenced to social or ecological systems. 
     - **Amanda** bad for ______ but good for __________ 
     - **Sean** anomalous implies bad for the ecosystem?
-    ![figure conception](https://share.icloud.com/photos/001Z-qkD4jZTwsFSFXnLoFz3Q)
+    ![figure conception](../photos/IMG_4626.JPG)
 
 ### Day 2: Building Off Day 1  
 #### Goals:  
