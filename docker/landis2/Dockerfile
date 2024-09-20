@@ -42,18 +42,16 @@ RUN wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsof
     rm packages-microsoft-prod.deb && \
     rm -rf /var/lib/apt/lists/*
 
+# Install Extensions
 # Install LANDIS
 RUN wget -O v8.zip https://github.com/LANDIS-II-Foundation/Core-Model-v8-LINUX/archive/refs/heads/main.zip && \
     unzip v8.zip && \
+    wget -O main.zip https://github.com/LANDIS-II-Foundation/Support-Library-Dlls-v8/archive/refs/heads/main.zip && \
+    unzip -n main.zip -d /opt/Core-Model-v8-LINUX-main/build/extensions/ && \
+    rm main.zip && \
+    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Support-Library-Dlls-v8-main/*.dll /opt/Core-Model-v8-LINUX-main/Tool-Console/src/lib/ && \
     cd /opt/Core-Model-v8-LINUX-main/Tool-Extension-Admin/src && dotnet build -c Release && \
     cd /opt/Core-Model-v8-LINUX-main/Tool-Console/src && dotnet build -c Release
-
-# Install Extensions
-
-# Install support libraries
-RUN wget -O main.zip https://github.com/LANDIS-II-Foundation/Support-Library-Dlls-v8/archive/refs/heads/main.zip && \
-    unzip main.zip -d /opt/Core-Model-v8-LINUX-main/build/extensions/ && \
-    rm main.zip
 
 #SCRPPLE test DGS compliant (this is the version within ML's personal repo- WORKS)
 RUN wget https://github.com/LANDIS-II-Foundation/Extension-Social-Climate-Fire/archive/refs/heads/master.zip && \
