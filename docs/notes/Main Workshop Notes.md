@@ -89,7 +89,7 @@
 #### Day 2 Overview  
 - **Rob**: We are moving toward synthesis and paper preparation.  
 - **Melissa**: Organized the gaps into seven themes. Groups will work on each theme, list research needs, and present findings.
-- Notes for individual group can be found [here](link)
+- Notes for individual group can be found [here](https://github.com/CU-ESIIL/ExtremeWildfire/tree/main/docs/notes)
 
 #### Group Discussions  
 - Addressed how to tackle research needs and identified missing tools and resources.  
