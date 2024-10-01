@@ -109,7 +109,7 @@
 3. **Identifying Gaps**: Round Robin discussion on model limitations.
 
 ### Key Themes and Ideas  
-- **Rob's Insights**:  
+- **Rob**:  
   - **Climate Management**: Address resistance, resilience, and adaptation strategies.  
   - **End Goals**: Trade-off analysis between societal benefits and negative outcomes.
 
@@ -120,7 +120,7 @@
 
 - **Lise's Contribution**: Utilize datasets to identify anomalous, high-impact fires for modeling and analysis.
 
-- **Branda's Vision**: Create an NIFC-focused NASA map that alerts communities when conditions exceed thresholds.
+- **Branda**: Create an NIFC-focused NASA map that alerts communities when conditions exceed thresholds.
 
 ### Research Proposals  
 - **Retrospective Analysis**:  
@@ -128,8 +128,8 @@
   - Paper 2: Exploring why some fires do not reach these levels.
 
 ### Machine Learning and Preparedness  
-- **Shelby's Inquiry**: Incorporate machine learning and statistical models.  
-- **Cole's Concern**: Assess public preparedness and reverse engineering vulnerabilities.
+- **Shelby**: Incorporate machine learning and statistical models.  
+- **Cole**: Assess public preparedness and reverse engineering vulnerabilities.
 
 ---
 
