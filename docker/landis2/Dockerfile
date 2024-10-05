@@ -85,6 +85,16 @@ RUN wget -O master.zip https://github.com/LANDIS-II-Foundation/Extension-Output-
     cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-Community-master/deploy/installer; dotnet /opt/Core-Model-v8-LINUX-main/build/Release/Landis.Extensions.dll add "Output Biomass Community 3.txt" && \
     cp /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-Community-master/src/obj/Release/netstandard2.0/Landis.Extension.Output.BiomassCommunity-v3.dll /opt/Core-Model-v8-LINUX-main/build/extensions/.
 
+# Output Biomass Succession
+RUN wget -O master.zip https://github.com/LANDIS-II-Foundation/Extension-Biomass-Succession/archive/refs/heads/master.zip && \
+    unzip master.zip -d /opt/Core-Model-v8-LINUX-main/build/extensions/ && \
+    rm master.zip && \
+    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Support-Library-Dlls-v8-main/*.dll /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Biomass-Succession-master/src/lib/ && \
+    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Biomass-Succession-master/src; sed -i -e 's/lib\\Landis.Library/..\\..\\Support-Library-Dlls-v8-master\\Landis.Library/g' biomass-succession.csproj && \
+    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Biomass-Succession-master/src; dotnet build -c Release biomass-succession.csproj && \
+    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Biomass-Succession-master/deploy/installer; dotnet /opt/Core-Model-v8-LINUX-main/build/Release/Landis.Extensions.dll add "/opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Biomass-Succession-master/deploy/installer/Biomass Succession 7.txt" && \
+    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Biomass-Succession-master/src/obj/Release/netstandard2.0/Landis.Extension.Succession.Biomass-v7.dll /opt/Core-Model-v8-LINUX-main/build/extensions/.
+
 # Output Biomass Reclass
 RUN wget -O master.zip https://github.com/LANDIS-II-Foundation/Extension-Output-Biomass-Reclass/archive/refs/heads/master.zip && \
     unzip master.zip -d /opt/Core-Model-v8-LINUX-main/build/extensions/ && \
@@ -132,6 +142,59 @@ RUN wget https://github.com/LANDIS-II-Foundation/Extension-NECN-Succession/archi
     cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-NECN-Succession-master/src; dotnet build -c Release NECN-succession.csproj && \
     cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-NECN-Succession-master/deploy/installer; dotnet /opt/Core-Model-v8-LINUX-main/build/Release/Landis.Extensions.dll add "/opt/Core-Model-v8-LINUX-main/build/extensions/Extension-NECN-Succession-master/deploy/installer/NECN_Succession8.txt" && \
     cp /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-NECN-Succession-master/src/obj/Release/netstandard2.0/Landis.Extension.Succession.NECN-v8.dll /opt/Core-Model-v8-LINUX-main/build/extensions/.
+
+# Add a hint path for all of the extensions to the Tool-Console csproj file and then rebuild it 
+RUN sed -i '/<\/Project>/i \
+<ItemGroup>\n\
+    <Reference Include="Landis.Extension.Succession.Biomass-v7.dll">\n\
+        <HintPath>../../build/extensions/Landis.Extension.Succession.Biomass-v7.dll</HintPath>\n\
+    </Reference>\n\
+    <Reference Include="Landis.Library.Metadata-v2">\n\
+        <HintPath>../../build/extensions/Landis.Library.Metadata-v2.dll</HintPath>\n\
+    </Reference>\n\
+    <Reference Include="Landis.Library.Succession-v9.dll">\n\
+        <HintPath>../../build/extensions/Landis.Library.Succession-v9.dll</HintPath>\n\
+    </Reference>\n\
+    <Reference Include="Landis.Extension.Succession.NECN-v8.dll">\n\
+        <HintPath>../../build/extensions/Landis.Extension.Succession.NECN-v8.dll</HintPath>\n\
+    </Reference>\n\
+    <Reference Include="Landis.Extension.SocialClimateFire-v4.dll">\n\
+        <HintPath>../../build/extensions/Landis.Extension.SocialClimateFire-v4.dll</HintPath>\n\
+    </Reference>\n\
+    <Reference Include="Landis.Extension.GiplDamm.dll">\n\
+        <HintPath>../../build/extensions/Landis.Extension.GiplDamm.dll</HintPath>\n\
+    </Reference>\n\
+    <Reference Include="Landis.Extension.Output.Biomass-v4.dll">\n\
+        <HintPath>../../build/extensions/Landis.Extension.Output.Biomass-v4.dll</HintPath>\n\
+    </Reference>\n\
+    <Reference Include="Landis.Extension.Output.BiomassCommunity-v3.dll">\n\
+        <HintPath>../../build/extensions/Landis.Extension.Output.BiomassCommunity-v3.dll</HintPath>\n\
+    </Reference>\n\
+    <Reference Include="Landis.Extension.Output.BiomassReclass-v4.dll">\n\
+        <HintPath>../../build/extensions/Landis.Extension.Output.BiomassReclass-v4.dll</HintPath>\n\
+    </Reference>\n\
+    <Reference Include="Landis.Extension.ShawDamm.dll">\n\
+        <HintPath>../../build/extensions/Landis.Extension.ShawDamm.dll</HintPath>\n\
+    </Reference>\n\
+    <Reference Include="Landis.Extension.Succession.DGS.dll">\n\
+        <HintPath>../../build/extensions/Landis.Extension.Succession.DGS.dll</HintPath>\n\
+    </Reference>\n\
+    <Reference Include="Landis.Library.BiomassHarvest-v3.dll">\n\
+        <HintPath>../../build/extensions/Landis.Library.BiomassHarvest-v3.dll</HintPath>\n\
+    </Reference>\n\
+    <Reference Include="Landis.Library.Climate-v5.dll">\n\
+        <HintPath>../../build/extensions/Landis.Library.Climate-v5.dll</HintPath>\n\
+    </Reference>\n\
+    <Reference Include="Landis.Library.HarvestManagement-v4.dll">\n\
+        <HintPath>../../build/extensions/Landis.Library.HarvestManagement-v4.dll</HintPath>\n\
+    </Reference>\n\
+    <Reference Include="Landis.Library.HarvestManagement-v4.dll">\n\
+        <HintPath>../../build/extensions/Landis.Library.HarvestManagement-v4.dll</HintPath>\n\
+    </Reference>\n\
+    <Reference Include="log4net.dll">\n\
+        <HintPath>../../build/extensions/log4net.dll</HintPath>\n\
+    </Reference>\n\
+</ItemGroup>' /opt/Core-Model-v8-LINUX-main/Tool-Console/src/Console.csproj
 
 # Move Support Libraries to the correct place
 RUN mv /opt/Core-Model-v8-LINUX-main/build/extensions/Support-Library-Dlls-v8-main/*.dll /opt/Core-Model-v8-LINUX-main/build/extensions/
@@ -211,6 +274,9 @@ RUN echo 'set-option -g status off' >> ~/.tmux.conf
 # add iRODS iCommands to user profile as JSON
 RUN mkdir /home/user/.irods 
 
+RUN cd /opt/Core-Model-v8-LINUX-main/Tool-Extension-Admin/src && dotnet build -c Release
+RUN echo "alias console='dotnet /opt/Core-Model-v8-LINUX-main/build/Release/Landis.Console.dll'" >> ~/.bashrc
+RUN echo "cd /opt/Core-Model-v8-LINUX-main/Tool-Console/src && dotnet build -c Release && cd" >> ~/.bashrc
 ENTRYPOINT ["bash", "/bin/entry.sh"]
 
 CMD ["ttyd", "bash"]
