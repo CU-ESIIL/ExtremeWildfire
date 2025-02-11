@@ -20,8 +20,8 @@ Extreme wildfire events are increasing, driven by the expansion of urban communi
 - **Member 5**: [Sam Flake, Co-PI.](https://github.com/flakesw)
 
 ## Repository Structure
-- **Analysis Code**: Scripts for data analysis, statistical modeling, etc.
-- **Data Processing**: Scripts for cleaning, merging, and managing datasets.
+- **LANDIS Docker file**: Documentation for integrating the LANDIS-II  model into Jetstream.
+- **Documents**: Meeting note, photos, references, etc.
 - **Visualization**: Code for creating figures, charts, and interactive visualizations.
 
 ## Meeting Notes and Agendas
