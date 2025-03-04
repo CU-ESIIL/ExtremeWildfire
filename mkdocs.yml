@@ -25,7 +25,7 @@ nav:
        - Workshop Notes: notes/Main_Workshop_Notes.md
        - Monday Breakout Notes: notes/Monday_Breakout_Group_Notes.md
        - Tuesday Breakout Notes: notes/Tuesday_Breakout_Group_Notes.md
-   - LANDIS-II Modeling: https://www.landis-ii.org
+#   - LANDIS-II Modeling: https://www.landis-ii.org <- cant point to external sites from nav
 #  - Code documentation:
 #       - Data processing: resources/data_processing.md
 #       - Data analysis: resources/data_analysis.md
