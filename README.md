@@ -24,6 +24,11 @@ Extreme wildfire events are increasing, driven by the expansion of urban communi
 - **Documents**: Meeting note, photos, references, etc.
 - **Visualization**: Code for creating figures, charts, and interactive visualizations.
 
+## Working Group Meeting (Sept 16 - Sept 19, Boulder, CO):
+- The goal of this wrokshop was to convene an interdisciplinary meeting with 15 experts in fire science that span the social and biophysical sciences to 1) synthesize our current understanding of extreme fire behavior and their socioeconomic context, 2) isolate the current gaps in our understanding of the social and biophysical markers that contribute to extreme fire behavior and risk to communities, and 3) develop a roadmap for improving the representation of social and biophysical mechanisms in models that drive extreme wildfire behavior. The results of our workshop will be written up into a peer-reviewed publication, co-authored by workshop participants.
+![ESIIL workshop group photo](../photos/IMG_4644.JPG)
+Participants: Melissa Lucash, Rob Scheller, Branda Nowell, James Lamping, Amanda Stasiewicz, Matt Hurteau, Jennifer Fawcett, Tirtha Banerjee, Courtney Schultz, Ali Urza, Zachary Robbins, Lise St. Denis, Shelby Weiss, Wesley Rancher, Sean Parks, Cole Buettner
+
 ## Meeting Notes and Agendas
 - **Extreme Wildfire Workshop**
   - [Main Meeting Notes](docs/notes/Main_Workshop_Notes.md)
