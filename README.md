@@ -10,7 +10,7 @@ Extreme wildfire events are increasing, driven by the expansion of urban communi
 
 ## Project Proposal
 
-[Here, you will find the accepted project proposal](), including project goals, timeline and more.
+[Here, you will find the accepted project proposal](https://github.com/CU-ESIIL/ExtremeWildfire/blob/main/docs/notes/ESIIL%20Proposal%20Body%202023-Final.pdf), including project goals, timeline and more.
 
 ## Group Members
 - **Member 1**: [Melissa Lucash, PI.](https://www.melissalucash.com/melissalucash)
@@ -25,7 +25,11 @@ Extreme wildfire events are increasing, driven by the expansion of urban communi
 - **Visualization**: Code for creating figures, charts, and interactive visualizations.
 
 ## Meeting Notes and Agendas
-- Regular updates to keep all group members informed and engaged with the project's progress and direction.
+- **Extreme Wildfire Workshop**
+  - [Main Meeting Notes](docs/notes/Main_Workshop_Notes.md)
+  - Breakout groups
+    - [Monday Breakout Groups](docs/notes/Monday_Breakout_Group_Notes.md)
+    - [Tuesday Breakout Groups](docs/notes/Tuesday_Breakout_Group_Notes.md)
 
 ## Contributing to This Repository
 - Contributions from all group members are welcome.
