@@ -22,9 +22,9 @@ nav:
 #       - Art Gallery: resources/art gallery.md
        - Docker: resources/docker_basics.md
   - Meeting Notes:
-       - Workshop Notes: notes/Main_Workshop_Notes.md
-       - Monday Breakout Notes: notes/Monday_Breakout_Group_Notes.md
-       - Tuesday Breakout Notes: notes/Tuesday_Breakout_Group_Notes.md
+       - Workshop Notes: notes/Main_Workshop_Notes/Main_Workshop_Notes.md
+       - Monday Breakout Notes: notes/Monday_Breakout_Group_Notes/Monday_Breakout_Group_Notes.md
+       - Tuesday Breakout Notes: notes/Tuesday_Breakout_Group_Notes/Tuesday_Breakout_Group_Notes.md
 #   - LANDIS-II Modeling: https://www.landis-ii.org <- cant point to external sites from nav
 #  - Code documentation:
 #       - Data processing: resources/data_processing.md
@@ -43,7 +43,7 @@ theme:
   font:
     text: 'Open Sans'
     code: 'Roboto Mono'
-  logo: 'assets/esiil_art/Extreme_fire_logo.png'
+  logo: 'assets/esiil_content/ESIIL_logo.png'
   favicon: 'assets/esiil_content/favicon.ico'
   # setting features for the navigation tab
   features:
