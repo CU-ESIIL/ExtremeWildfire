@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 USER root
 
@@ -31,117 +31,156 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Install Python 3 and pip
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 # Set the working directory
 WORKDIR /opt
 
-RUN wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb && \
-    dpkg -i packages-microsoft-prod.deb && \
-    apt-get update && \
-    apt-get install -y dotnet-sdk-8.0 && \
-    apt-get clean && \
-    rm packages-microsoft-prod.deb && \
-    rm -rf /var/lib/apt/lists/*
+#RUN wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb && \
+#    dpkg -i packages-microsoft-prod.deb && \
+#    apt-get update && \
+#    apt-get install -y dotnet-sdk-8.0 && \
+#    apt-get clean && \
+#    rm packages-microsoft-prod.deb && \
+#    rm -rf /var/lib/apt/lists/*
 
-# Install Extensions
+RUN mkdir /bin/.dotnet/ && cd /bin/.dotnet/ \
+&& wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh \
+&& chmod +x ./dotnet-install.sh \
+&& ./dotnet-install.sh --channel 8.0 -InstallDir /bin/.dotnet/  \
+&& ./dotnet-install.sh --channel 8.0 --runtime aspnetcore -InstallDir /bin/.dotnet/ \
+&& apt-get clean && rm -rf /var/lib/apt/lists/*
+ENV DOTNET_ROOT=/bin/.dotnet
+ENV PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
+
 # Install LANDIS
-RUN wget -O v8.zip https://github.com/LANDIS-II-Foundation/Core-Model-v8-LINUX/archive/refs/heads/main.zip && \
-    unzip v8.zip && \
-    wget -O main.zip https://github.com/LANDIS-II-Foundation/Support-Library-Dlls-v8/archive/refs/heads/main.zip && \
-    unzip -n main.zip -d /opt/Core-Model-v8-LINUX-main/build/extensions/ && \
-    rm main.zip && \
-    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Support-Library-Dlls-v8-main/*.dll /opt/Core-Model-v8-LINUX-main/Tool-Console/src/lib/ && \
-    cd /opt/Core-Model-v8-LINUX-main/Tool-Extension-Admin/src && dotnet build -c Release && \
-    cd /opt/Core-Model-v8-LINUX-main/Tool-Console/src && dotnet build -c Release
+WORKDIR /opt
+
+RUN git clone https://github.com/LANDIS-II-Foundation/Core-Model-v8-LINUX.git && \
+    cd Core-Model-v8-LINUX/Tool-Console/src && dotnet build -c Release
+
+RUN cd /opt/Core-Model-v8-LINUX/ && \ 
+    git clone https://github.com/LANDIS-II-Foundation/Support-Library-Dlls-v8.git && \ 
+    mv Support-Library-Dlls-v8/* /opt/Core-Model-v8-LINUX/build/extensions
+
+# Thanks to Clement Hardy https://github.com/Klemet
+COPY ./editing_csproj_LANDIS-II_files.py /opt/Core-Model-v8-LINUX
 
 #SCRPPLE test DGS compliant (this is the version within ML's personal repo- WORKS)
-RUN wget https://github.com/LANDIS-II-Foundation/Extension-Social-Climate-Fire/archive/refs/heads/master.zip && \
-    unzip master.zip -d /opt/Core-Model-v8-LINUX-main/build/extensions/ && \
-    rm master.zip && \
-    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Support-Library-Dlls-v8-main/*.dll /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Social-Climate-Fire-master/src/lib/ && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Social-Climate-Fire-master/src; sed -i -e 's/lib\\Landis.Library/..\\..\\Support-Library-Dlls-v8-master\\Landis.Library/g' SocialClimateFire.csproj && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Social-Climate-Fire-master/src; sed -i -e 's/lib\\Ether./..\\..\\Support-Library-Dlls-v8-master\\Ether./g' SocialClimateFire.csproj && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Social-Climate-Fire-master/src; dotnet build -c Release SocialClimateFire.csproj && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Social-Climate-Fire-master/deploy/installer; dotnet /opt/Core-Model-v8-LINUX-main/build/Release/Landis.Extensions.dll add "/opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Social-Climate-Fire-master/deploy/installer/Scrapple 4.txt" && \
-    ls /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Social-Climate-Fire-master/src/obj/Release/ && \
-    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Social-Climate-Fire-master/src/obj/Release/netstandard2.0/Landis.Extension.SocialClimateFire-v4.dll /opt/Core-Model-v8-LINUX-main/build/extensions/.
+RUN cd /opt/Core-Model-v8-LINUX && \ 
+    git clone https://github.com/LANDIS-II-Foundation/Extension-Social-Climate-Fire.git && \ 
+    cd Extension-Social-Climate-Fire && \ 
+    #git checkout b463ea378f1bcde4369907a408dfe64b9cc52c7a && \  
+    cd /opt/Core-Model-v8-LINUX/Extension-Social-Climate-Fire/src && \
+#    sed -i '39i    <HintPath>..\\..\\build\\extensions\\Landis.Library.Climate-v5.dll</HintPath>' SocialClimateFire.csproj && \
+    python3 /opt/Core-Model-v8-LINUX/editing_csproj_LANDIS-II_files.py ./SocialClimateFire.csproj && \
+    dotnet build -c Release && \
+    dotnet /opt/Core-Model-v8-LINUX/build/Release/Landis.Extensions.dll add "/opt/Core-Model-v8-LINUX/Extension-Social-Climate-Fire/deploy/installer/Scrapple 4.txt" 
 
 # Output Biomass (WORKS)
 RUN wget -O master.zip https://github.com/LANDIS-II-Foundation/Extension-Output-Biomass/archive/refs/heads/master.zip && \
-    unzip master.zip -d /opt/Core-Model-v8-LINUX-main/build/extensions/ && \
+    unzip master.zip -d /opt/Core-Model-v8-LINUX/ && \
     rm master.zip && \
-    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Support-Library-Dlls-v8-main/*.dll /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-master/src/lib/ && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-master/src; sed -i -e 's/lib\\Landis.Library/..\\..\\Support-Library-Dlls-v8-master\\Landis.Library/g' output-biomass.csproj && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-master/src; dotnet build -c Release output-biomass.csproj && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-master/deploy/installer; dotnet /opt/Core-Model-v8-LINUX-main/build/Release/Landis.Extensions.dll add "Output Biomass 4.txt" && \
-    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-master/src/obj/Release/netstandard2.0/Landis.Extension.Output.Biomass-v4.dll /opt/Core-Model-v8-LINUX-main/build/extensions/.
-
+    cd /opt/Core-Model-v8-LINUX/Extension-Output-Biomass-master/src && \
+    #cp /opt/Core-Model-v8-LINUX-main/build/extensions/Support-Library-Dlls-v8-main/*.dll /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-master/src/lib/ && \
+    #cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-master/src; sed -i -e 's/lib\\Landis.Library/..\\..\\Support-Library-Dlls-v8-master\\Landis.Library/g' output-biomass.csproj && \
+    python3 /opt/Core-Model-v8-LINUX/editing_csproj_LANDIS-II_files.py ./output-biomass.csproj && \
+    dotnet build -c Release && \
+    dotnet /opt/Core-Model-v8-LINUX/build/Release/Landis.Extensions.dll add "/opt/Core-Model-v8-LINUX/Extension-Output-Biomass-master/deploy/installer/Output Biomass 4.txt"
+    
 # Output Biomass Community 
 RUN wget -O master.zip https://github.com/LANDIS-II-Foundation/Extension-Output-Biomass-Community/archive/refs/heads/master.zip && \
-    unzip master.zip -d /opt/Core-Model-v8-LINUX-main/build/extensions/ && \
+    unzip master.zip -d /opt/Core-Model-v8-LINUX/ && \
     rm master.zip && \
-    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Support-Library-Dlls-v8-main/*.dll /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-Community-master/src/lib/ && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-Community-master/src; sed -i -e 's/lib\\Landis.Library/..\\..\\Support-Library-Dlls-v8-master\\Landis.Library/g' output-biomass-community.csproj && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-Community-master/src; dotnet build -c Release output-biomass-community.csproj && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-Community-master/deploy/installer; dotnet /opt/Core-Model-v8-LINUX-main/build/Release/Landis.Extensions.dll add "Output Biomass Community 3.txt" && \
-    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-Community-master/src/obj/Release/netstandard2.0/Landis.Extension.Output.BiomassCommunity-v3.dll /opt/Core-Model-v8-LINUX-main/build/extensions/.
-
+    cd /opt/Core-Model-v8-LINUX/Extension-Output-Biomass-Community-master/src && \
+    python3 /opt/Core-Model-v8-LINUX/editing_csproj_LANDIS-II_files.py ./output-biomass-community.csproj && \
+    dotnet build -c Release && \
+    dotnet /opt/Core-Model-v8-LINUX/build/Release/Landis.Extensions.dll add "/opt/Core-Model-v8-LINUX/Extension-Output-Biomass-Community-master/deploy/installer/Output Biomass Community 3.txt"
+    
 # Output Biomass Succession
-RUN wget -O master.zip https://github.com/LANDIS-II-Foundation/Extension-Biomass-Succession/archive/refs/heads/master.zip && \
-    unzip master.zip -d /opt/Core-Model-v8-LINUX-main/build/extensions/ && \
-    rm master.zip && \
-    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Support-Library-Dlls-v8-main/*.dll /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Biomass-Succession-master/src/lib/ && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Biomass-Succession-master/src; sed -i -e 's/lib\\Landis.Library/..\\..\\Support-Library-Dlls-v8-master\\Landis.Library/g' biomass-succession.csproj && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Biomass-Succession-master/src; dotnet build -c Release biomass-succession.csproj && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Biomass-Succession-master/deploy/installer; dotnet /opt/Core-Model-v8-LINUX-main/build/Release/Landis.Extensions.dll add "/opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Biomass-Succession-master/deploy/installer/Biomass Succession 7.txt" && \
-    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Biomass-Succession-master/src/obj/Release/netstandard2.0/Landis.Extension.Succession.Biomass-v7.dll /opt/Core-Model-v8-LINUX-main/build/extensions/.
+RUN cd /opt/Core-Model-v8-LINUX/ && \
+    git clone https://github.com/LANDIS-II-Foundation/Extension-Biomass-Succession.git && \ 
+    cd /opt/Core-Model-v8-LINUX/Extension-Biomass-Succession && \
+    #git checkout 58ad3673e02abe82f437a6b68c44220c51351091 && \ 
+    cd /opt/Core-Model-v8-LINUX/Extension-Biomass-Succession/src && \
+    python3 /opt/Core-Model-v8-LINUX/editing_csproj_LANDIS-II_files.py ./biomass-succession.csproj && \
+    dotnet build -c Release && \
+    dotnet /opt/Core-Model-v8-LINUX/build/Release/Landis.Extensions.dll add "/opt/Core-Model-v8-LINUX/Extension-Biomass-Succession/deploy/installer/Biomass Succession 7.txt"
 
 # Output Biomass Reclass
 RUN wget -O master.zip https://github.com/LANDIS-II-Foundation/Extension-Output-Biomass-Reclass/archive/refs/heads/master.zip && \
-    unzip master.zip -d /opt/Core-Model-v8-LINUX-main/build/extensions/ && \
+    unzip master.zip -d /opt/Core-Model-v8-LINUX/ && \
     rm master.zip && \
-    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Support-Library-Dlls-v8-main/*.dll /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-Reclass-master/src/lib/ && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-Reclass-master/src; sed -i -e 's/lib\\Landis.Library/..\\..\\Support-Library-Dlls-v8-master\\Landis.Library/g' output-biomass.csproj && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-Reclass-master/src; dotnet build -c Release output-biomass.csproj && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-Reclass-master/deploy/installer; dotnet /opt/Core-Model-v8-LINUX-main/build/Release/Landis.Extensions.dll add "Output Biomass Reclass 4.txt" && \
-    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-Reclass-master/src/obj/Release/netstandard2.0/Landis.Extension.Output.BiomassReclass-v4.dll /opt/Core-Model-v8-LINUX-main/build/extensions/.
+    cd /opt/Core-Model-v8-LINUX/Extension-Output-Biomass-Reclass-master/src && \ 
+    python3 /opt/Core-Model-v8-LINUX/editing_csproj_LANDIS-II_files.py ./output-biomass.csproj && \
+    dotnet build -c Release && \
+    dotnet /opt/Core-Model-v8-LINUX/build/Release/Landis.Extensions.dll add "/opt/Core-Model-v8-LINUX/Extension-Output-Biomass-Reclass-master/deploy/installer/Output Biomass Reclass 4.txt"
 
 # GIPL (WORKS)
 RUN wget https://github.com/LANDIS-II-Foundation/Library-GIPL/archive/master.zip && \
-    unzip master.zip -d /opt/Core-Model-v8-LINUX-main/build/extensions/ && \
+    unzip master.zip -d /opt/Core-Model-v8-LINUX/ && \
     rm master.zip && \
-    mv /opt/Core-Model-v8-LINUX-main/build/extensions/Library-GIPL-master/ /opt/Core-Model-v8-LINUX-main/build/extensions/Library-GIPL/ && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Library-GIPL/src; sed -i -e 's/lib\\Landis.Library/..\\..\\Support-Library-Dlls-v8-master\\Landis.Library/g' GiplDamm.csproj && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Library-GIPL/src; dotnet build -c Release GiplDamm.csproj && \
-    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Library-GIPL/src/bin/Debug/netstandard2.0/Landis.Extension.GiplDamm.dll /opt/Core-Model-v8-LINUX-main/build/extensions/.  
- 
+    mv /opt/Core-Model-v8-LINUX/Library-GIPL-master/ /opt/Core-Model-v8-LINUX/Library-GIPL/ && \
+    cd /opt/Core-Model-v8-LINUX/Library-GIPL/src && \ 
+    python3 /opt/Core-Model-v8-LINUX/editing_csproj_LANDIS-II_files.py ./GiplDamm.csproj && \
+    dotnet build -c Release && \
+    cp /opt/Core-Model-v8-LINUX/Library-GIPL/src/bin/Debug/netstandard2.0/Landis.Extension.GiplDamm.dll /opt/Core-Model-v8-LINUX/build/extensions/.  
+
 # SHAW (WORKS)
 RUN wget https://github.com/LANDIS-II-Foundation/Library-Shaw/archive/refs/heads/master.zip && \
-    unzip master.zip -d /opt/Core-Model-v8-LINUX-main/build/extensions/ && \
+    unzip master.zip -d /opt/Core-Model-v8-LINUX && \
     rm master.zip && \
-    mv /opt/Core-Model-v8-LINUX-main/build/extensions/Library-Shaw-master/ /opt/Core-Model-v8-LINUX-main/build/extensions/Library-Shaw/ && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Library-Shaw/src; sed -i -e 's/lib\\Landis.Library/..\\..\\Support-Library-Dlls-v8-master\\Landis.Library/g' ShawDammNewInputs.csproj && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Library-Shaw/src; dotnet build -c Release ShawDammNewInputs.csproj && \
-    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Library-Shaw/src/bin/Debug/netstandard2.0/Landis.Extension.ShawDamm.dll /opt/Core-Model-v8-LINUX-main/build/extensions/. 
+    mv /opt/Core-Model-v8-LINUX/Library-Shaw-master/ /opt/Core-Model-v8-LINUX/Library-Shaw/ && \
+    cd /opt/Core-Model-v8-LINUX/Library-Shaw/src && \
+    python3 /opt/Core-Model-v8-LINUX/editing_csproj_LANDIS-II_files.py ./ShawDammNewInputs.csproj && \
+    dotnet build -c Release && \
+    cp /opt/Core-Model-v8-LINUX/Library-Shaw/src/bin/Debug/netstandard2.0/Landis.Extension.ShawDamm.dll /opt/Core-Model-v8-LINUX/build/extensions/. 
 
 # DGS (WORKS)
-RUN wget https://github.com/LANDIS-II-Foundation/Extension-DGS-Succession/archive/refs/heads/master.zip && \
-    unzip master.zip -d /opt/Core-Model-v8-LINUX-main/build/extensions/ && \
-    rm master.zip && \
-    mv /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-DGS-Succession-master/ /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-DGS-Succession/ && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-DGS-Succession/src; sed -i -e 's/lib\\Landis.Library/..\\..\\Support-Library-Dlls-v8-master\\Landis.Library/g' DGS-succession.csproj && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-DGS-Succession/src; dotnet build -c Release DGS-succession.csproj && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-DGS-Succession/deploy/installer; dotnet /opt/Core-Model-v8-LINUX-main/build/Release/Landis.Extensions.dll add "DGS_Succession 1.102.txt" && \
-    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-DGS-Succession/src/bin/Debug/netstandard2.0/Landis.Extension.Succession.DGS.dll /opt/Core-Model-v8-LINUX-main/build/extensions/. 
+RUN wget https://github.com/LANDIS-II-Foundation/Extension-DGS-Succession/archive/refs/heads/v8.zip && \
+    unzip v8.zip -d /opt/Core-Model-v8-LINUX/ && \
+    rm v8.zip && \
+    mv /opt/Core-Model-v8-LINUX/Extension-DGS-Succession-8/ /opt/Core-Model-v8-LINUX/Extension-DGS-Succession/ && \
+    cd /opt/Core-Model-v8-LINUX/Extension-DGS-Succession/src && \
+    python3 /opt/Core-Model-v8-LINUX/editing_csproj_LANDIS-II_files.py ./DGS-succession.csproj && \
+    dotnet build -c Release && \
+    dotnet /opt/Core-Model-v8-LINUX/build/Release/Landis.Extensions.dll add "/opt/Core-Model-v8-LINUX/Extension-DGS-Succession/deploy/installer/DGS_Succession 1.102.txt"
 
 # NECN (WORKS)
-RUN wget https://github.com/LANDIS-II-Foundation/Extension-NECN-Succession/archive/refs/heads/master.zip && \
-    unzip master.zip -d /opt/Core-Model-v8-LINUX-main/build/extensions/ && \
+RUN cd /opt/Core-Model-v8-LINUX/ && \
+    git clone https://github.com/LANDIS-II-Foundation/Extension-NECN-Succession.git && \
+    cd /opt/Core-Model-v8-LINUX/Extension-NECN-Succession && \ 
+    #git checkout 37ce246c37bab3448e3db134373deb56063e14ac && \
+    cd /opt/Core-Model-v8-LINUX/Extension-NECN-Succession/src && \     
+    python3 /opt/Core-Model-v8-LINUX/editing_csproj_LANDIS-II_files.py ./NECN-succession.csproj && \
+    #sed -i '39i    <HintPath>..\\..\\build\\extensions\\Landis.Library.Climate-v5.dll</HintPath>' NECN-succession.csproj && \ 
+    dotnet build -c Release && \
+    dotnet /opt/Core-Model-v8-LINUX/build/Release/Landis.Extensions.dll add "/opt/Core-Model-v8-LINUX/Extension-NECN-Succession/deploy/installer/NECN_Succession8.txt"
+
+#RUN cd /opt/Core-Model-v8-LINUX && \ 
+#    rm /opt/Core-Model-v8-LINUX/build/extensions/Landis.Library.UniversalCohorts-v1.dll && \
+    #wget https://github.com/LANDIS-II-Foundation/Library-Universal-Cohort/archive/refs/heads/main.zip && \
+#    mkdir /opt/Core-Model-v8-LINUX/Library-Universal-Cohort-main/ && \
+#    cd /opt/Core-Model-v8-LINUX/Library-Universal-Cohort-main && \ 
+#    git clone https://github.com/LANDIS-II-Foundation/Library-Universal-Cohort.git && \ 
+#    cd /opt/Core-Model-v8-LINUX/Library-Universal-Cohort-main/Library-Universal-Cohort/ && \
+#    git checkout a1e84adc8073fb7c89ee078a38349b5d578d4179 && \
+#    python3 /opt/Core-Model-v8-LINUX/editing_csproj_LANDIS-II_files.py ./universal-cohort.csproj && \
+#    dotnet build -c Release
+
+RUN cd /opt/Core-Model-v8-LINUX && \
+    rm /opt/Core-Model-v8-LINUX/build/extensions/Landis.Library.InitialCommunity.Universal.dll && \
+    wget https://github.com/LANDIS-II-Foundation/Library-Initial-Community/archive/refs/heads/master.zip && \
+    mkdir /opt/Core-Model-v8-LINUX/Initial-Community-main/ && \
+    unzip master.zip -d /opt/Core-Model-v8-LINUX/Initial-Community-main/ && \
     rm master.zip && \
-    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Support-Library-Dlls-v8-main/*.dll /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-NECN-Succession-master/src/lib/ && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-NECN-Succession-master/src; sed -i -e 's/lib\\Landis.Library/..\\..\\Support-Library-Dlls-v8-master\\Landis.Library/g' NECN-succession.csproj && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-NECN-Succession-master/src; dotnet build -c Release NECN-succession.csproj && \
-    cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-NECN-Succession-master/deploy/installer; dotnet /opt/Core-Model-v8-LINUX-main/build/Release/Landis.Extensions.dll add "/opt/Core-Model-v8-LINUX-main/build/extensions/Extension-NECN-Succession-master/deploy/installer/NECN_Succession8.txt" && \
-    cp /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-NECN-Succession-master/src/obj/Release/netstandard2.0/Landis.Extension.Succession.NECN-v8.dll /opt/Core-Model-v8-LINUX-main/build/extensions/.
+    cd /opt/Core-Model-v8-LINUX/Initial-Community-main/Library-Initial-Community-master/ && \
+    python3 /opt/Core-Model-v8-LINUX/editing_csproj_LANDIS-II_files.py ./initial-community.csproj && \ 
+    dotnet build -c Release
 
 # Add a hint path for all of the extensions to the Tool-Console csproj file and then rebuild it 
 RUN sed -i '/<\/Project>/i \
@@ -170,6 +209,9 @@ RUN sed -i '/<\/Project>/i \
     <Reference Include="Landis.Extension.Output.BiomassCommunity-v3.dll">\n\
         <HintPath>../../build/extensions/Landis.Extension.Output.BiomassCommunity-v3.dll</HintPath>\n\
     </Reference>\n\
+    <Reference Include="Landis.Library.UniversalCohorts-v1.dll">\n\
+        <HintPath>../../build/extensions/Landis.Library.UniversalCohorts-v1.dll</HintPath>\n\
+    </Reference>\n\
     <Reference Include="Landis.Extension.Output.BiomassReclass-v4.dll">\n\
         <HintPath>../../build/extensions/Landis.Extension.Output.BiomassReclass-v4.dll</HintPath>\n\
     </Reference>\n\
@@ -194,12 +236,15 @@ RUN sed -i '/<\/Project>/i \
     <Reference Include="log4net.dll">\n\
         <HintPath>../../build/extensions/log4net.dll</HintPath>\n\
     </Reference>\n\
-</ItemGroup>' /opt/Core-Model-v8-LINUX-main/Tool-Console/src/Console.csproj
+    <Reference Include="Landis.Library.UniversalCohorts-v1.dll">\n\
+        <HintPath>../../build/extensions/Landis.Library.UniversalCohorts-v1.dll</HintPath>\n\
+    </Reference>\n\
+</ItemGroup>' /opt/Core-Model-v8-LINUX/Tool-Console/src/Console.csproj
 
 # Move Support Libraries to the correct place
-RUN mv /opt/Core-Model-v8-LINUX-main/build/extensions/Support-Library-Dlls-v8-main/*.dll /opt/Core-Model-v8-LINUX-main/build/extensions/
+#RUN mv /opt/Core-Model-v8-LINUX-main/build/extensions/Support-Library-Dlls-v8-main/*.dll /opt/Core-Model-v8-LINUX-main/build/extensions/
 
-RUN chown -R 1000:1000 /opt/Core-Model-v8-LINUX-main
+RUN chown -R 1000:1000 /opt/Core-Model-v8-LINUX
     
 ARG LOCAL_USER=user
 ARG PRIV_CMDS='/bin/ch*,/bin/cat,/bin/gunzip,/bin/tar,/bin/mkdir,/bin/ps,/bin/mv,/bin/cp,/usr/bin/apt*,/usr/bin/pip*,/bin/yum'
@@ -274,9 +319,10 @@ RUN echo 'set-option -g status off' >> ~/.tmux.conf
 # add iRODS iCommands to user profile as JSON
 RUN mkdir /home/user/.irods 
 
-RUN cd /opt/Core-Model-v8-LINUX-main/Tool-Extension-Admin/src && dotnet build -c Release
+#RUN cd /opt/Core-Model-v8-LINUX-main/Tool-Extension-Admin/src && dotnet build -c Release
 RUN echo "alias console='dotnet /opt/Core-Model-v8-LINUX-main/build/Release/Landis.Console.dll'" >> ~/.bashrc
-RUN echo "cd /opt/Core-Model-v8-LINUX-main/Tool-Console/src && dotnet build -c Release && cd" >> ~/.bashrc
+#RUN echo "cd /opt/Core-Model-v8-LINUX-main/Tool-Console/src && dotnet build -c Release && cd" >> ~/.bashrc
+RUN cd /opt/Core-Model-v8-LINUX/Tool-Console/src && dotnet build -c Release
 ENTRYPOINT ["bash", "/bin/entry.sh"]
 
 CMD ["ttyd", "bash"]
