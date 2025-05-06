@@ -76,7 +76,6 @@ RUN cd /opt/Core-Model-v8-LINUX && \
     cd Extension-Social-Climate-Fire && \ 
     #git checkout b463ea378f1bcde4369907a408dfe64b9cc52c7a && \  
     cd /opt/Core-Model-v8-LINUX/Extension-Social-Climate-Fire/src && \
-#    sed -i '39i    <HintPath>..\\..\\build\\extensions\\Landis.Library.Climate-v5.dll</HintPath>' SocialClimateFire.csproj && \
     python3 /opt/Core-Model-v8-LINUX/editing_csproj_LANDIS-II_files.py ./SocialClimateFire.csproj && \
     dotnet build -c Release && \
     dotnet /opt/Core-Model-v8-LINUX/build/Release/Landis.Extensions.dll add "/opt/Core-Model-v8-LINUX/Extension-Social-Climate-Fire/deploy/installer/Scrapple 4.txt" 
@@ -87,7 +86,6 @@ RUN wget -O master.zip https://github.com/LANDIS-II-Foundation/Extension-Output-
     rm master.zip && \
     cd /opt/Core-Model-v8-LINUX/Extension-Output-Biomass-master/src && \
     #cp /opt/Core-Model-v8-LINUX-main/build/extensions/Support-Library-Dlls-v8-main/*.dll /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-master/src/lib/ && \
-    #cd /opt/Core-Model-v8-LINUX-main/build/extensions/Extension-Output-Biomass-master/src; sed -i -e 's/lib\\Landis.Library/..\\..\\Support-Library-Dlls-v8-master\\Landis.Library/g' output-biomass.csproj && \
     python3 /opt/Core-Model-v8-LINUX/editing_csproj_LANDIS-II_files.py ./output-biomass.csproj && \
     dotnet build -c Release && \
     dotnet /opt/Core-Model-v8-LINUX/build/Release/Landis.Extensions.dll add "/opt/Core-Model-v8-LINUX/Extension-Output-Biomass-master/deploy/installer/Output Biomass 4.txt"
@@ -140,26 +138,28 @@ RUN wget https://github.com/LANDIS-II-Foundation/Library-Shaw/archive/refs/heads
     dotnet build -c Release && \
     cp /opt/Core-Model-v8-LINUX/Library-Shaw/src/bin/Debug/netstandard2.0/Landis.Extension.ShawDamm.dll /opt/Core-Model-v8-LINUX/build/extensions/. 
 
-# DGS (WORKS)
+# NECN (WORKS)
+RUN cd /opt/Core-Model-v8-LINUX/ && \
+    git clone https://github.com/LANDIS-II-Foundation/Extension-NECN-Succession.git && \
+    #cd /opt/Core-Model-v8-LINUX/Extension-NECN-Succession && \ 
+    #git checkout 37ce246c37bab3448e3db134373deb56063e14ac && \
+    cd /opt/Core-Model-v8-LINUX/Extension-NECN-Succession/src && \     
+    python3 /opt/Core-Model-v8-LINUX/editing_csproj_LANDIS-II_files.py ./NECN-succession.csproj && \
+    dotnet build -c Release && \
+    dotnet /opt/Core-Model-v8-LINUX/build/Release/Landis.Extensions.dll add "/opt/Core-Model-v8-LINUX/Extension-NECN-Succession/deploy/installer/NECN_Succession8.txt"
+
+# DGS (FIXED to ensure proper DLL versions--inherited from NECN)
 RUN wget https://github.com/LANDIS-II-Foundation/Extension-DGS-Succession/archive/refs/heads/v8.zip && \
     unzip v8.zip -d /opt/Core-Model-v8-LINUX/ && \
     rm v8.zip && \
     mv /opt/Core-Model-v8-LINUX/Extension-DGS-Succession-8/ /opt/Core-Model-v8-LINUX/Extension-DGS-Succession/ && \
+    #best bet is to remove the main support dlls from DGS repo then push latest
+    rm /opt/Core-Model-v8-LINUX/Extension-DGS-Succession/src/lib/*.dll && \
+    #cp /opt/Core-Model-v8-LINUX/Extension-NECN-Succession/src/lib/*.dll /opt/Core-Model-v8-LINUX/Extension-DGS-Succession/src/lib/ && \
     cd /opt/Core-Model-v8-LINUX/Extension-DGS-Succession/src && \
     python3 /opt/Core-Model-v8-LINUX/editing_csproj_LANDIS-II_files.py ./DGS-succession.csproj && \
     dotnet build -c Release && \
     dotnet /opt/Core-Model-v8-LINUX/build/Release/Landis.Extensions.dll add "/opt/Core-Model-v8-LINUX/Extension-DGS-Succession/deploy/installer/DGS_Succession 1.102.txt"
-
-# NECN (WORKS)
-RUN cd /opt/Core-Model-v8-LINUX/ && \
-    git clone https://github.com/LANDIS-II-Foundation/Extension-NECN-Succession.git && \
-    cd /opt/Core-Model-v8-LINUX/Extension-NECN-Succession && \ 
-    #git checkout 37ce246c37bab3448e3db134373deb56063e14ac && \
-    cd /opt/Core-Model-v8-LINUX/Extension-NECN-Succession/src && \     
-    python3 /opt/Core-Model-v8-LINUX/editing_csproj_LANDIS-II_files.py ./NECN-succession.csproj && \
-    #sed -i '39i    <HintPath>..\\..\\build\\extensions\\Landis.Library.Climate-v5.dll</HintPath>' NECN-succession.csproj && \ 
-    dotnet build -c Release && \
-    dotnet /opt/Core-Model-v8-LINUX/build/Release/Landis.Extensions.dll add "/opt/Core-Model-v8-LINUX/Extension-NECN-Succession/deploy/installer/NECN_Succession8.txt"
 
 #RUN cd /opt/Core-Model-v8-LINUX && \ 
 #    rm /opt/Core-Model-v8-LINUX/build/extensions/Landis.Library.UniversalCohorts-v1.dll && \
@@ -320,7 +320,7 @@ RUN echo 'set-option -g status off' >> ~/.tmux.conf
 RUN mkdir /home/user/.irods 
 
 #RUN cd /opt/Core-Model-v8-LINUX-main/Tool-Extension-Admin/src && dotnet build -c Release
-RUN echo "alias console='dotnet /opt/Core-Model-v8-LINUX-main/build/Release/Landis.Console.dll'" >> ~/.bashrc
+RUN echo "alias console='dotnet /opt/Core-Model-v8-LINUX/build/Release/Landis.Console.dll'" >> ~/.bashrc
 #RUN echo "cd /opt/Core-Model-v8-LINUX-main/Tool-Console/src && dotnet build -c Release && cd" >> ~/.bashrc
 RUN cd /opt/Core-Model-v8-LINUX/Tool-Console/src && dotnet build -c Release
 ENTRYPOINT ["bash", "/bin/entry.sh"]
